@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario - Gimnasio</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        h1, h4 {
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="mt-4">Gestión de Inventario de Barras y Discos</h1>
+
+        <div class="mt-4">
+            <h4>Inventario Actual</h4>
+            <p><strong>Tiras de metal en stock:</strong> <span id="stockTiras">10</span></p>
+            <p><strong>Discos en stock:</strong> <span id="stockDiscos">15</span></p>
+            <p><strong>Barras fabricadas:</strong> <span id="barrasFabricadas">0</span></p>
+            <p><strong>Kits de familia fabricados:</strong> <span id="kitsFabricados">0</span></p>
+        </div>
+
+        <div class="mt-4">
+            <h4>Estimación de Producción</h4>
+            <p><strong>Barras que se pueden fabricar:</strong> <span id="barrasPosibles">0</span></p>
+            <p><strong>Kits que se pueden armar:</strong> <span id="kitsPosibles">0</span></p>
+            <p><strong>Conjuntos de discos que se pueden armar:</strong> <span id="discosPosibles">0</span></p>
+        </div>
+
+        <div class="mt-4">
+            <button class="btn btn-primary" onclick="fabricarBarras()">Fabricar Barras</button>
+            <button class="btn btn-secondary mx-2" onclick="crearKits()">Crear Kits de Familia</button>
+        </div>
+    </div>
+
+    <script>
+        // Variables de estado
+        let stockTiras = 10;
+        let stockDiscos = 15;
+        let barrasFabricadas = 0;
+        let kitsFabricados = 0;
+
+        // Función para estimar barras posibles a fabricar
+        function calcularBarras() {
+            return Math.floor(stockTiras * 2);
+        }
+
+        // Función para calcular kits posibles a armar (2 barras por kit)
+        function calcularKits() {
+            return Math.floor(calcularBarras() / 2);
+        }
+
+        // Función para calcular discos posibles a armar (3 discos por conjunto)
+        function calcularDiscos() {
+            return Math.floor(stockDiscos / 3);
+        }
+
+        // Actualiza la vista con las estimaciones
+        function actualizarVista() {
+            document.getElementById('barrasPosibles').innerText = calcularBarras();
+            document.getElementById('kitsPosibles').innerText = calcularKits();
+            document.getElementById('discosPosibles').innerText = calcularDiscos();
+            document.getElementById('stockTiras').innerText = stockTiras;
+            document.getElementById('stockDiscos').innerText = stockDiscos;
+            document.getElementById('barrasFabricadas').innerText = barrasFabricadas;
+            document.getElementById('kitsFabricados').innerText = kitsFabricados;
+        }
+
+        // Fabricar barras y actualizar stock
+        function fabricarBarras() {
+            let barras = calcularBarras();
+            if (barras > 0) {
+                barrasFabricadas = barras;
+                stockTiras = 0; // Usamos todas las tiras disponibles
+                actualizarVista();
+            } else {
+                alert('No hay suficientes tiras para fabricar barras.');
+            }
+        }
+
+        // Crear kits de familia y actualizar stock
+        function crearKits() {
+            let kits = calcularKits();
+            if (kits > 0) {
+                kitsFabricados = kits;
+                stockTiras = 0; // Usamos todas las tiras para los kits
+                actualizarVista();
+            } else {
+                alert('No hay suficientes barras para fabricar kits.');
+            }
+        }
+
+        // Inicializar la vista con los valores iniciales
+        actualizarVista();
+    </script>
+
+</body>
+</html>
